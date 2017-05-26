@@ -1,0 +1,68 @@
+*{
+    font-family: sans-serif;
+    padding: 00px;
+    margin: 0px;
+}
+body {
+    background: lightblue;
+}
+#all_books{
+    background: lightgray;
+    display: inline-block;
+    overflow: auto;
+    height: 100px;
+    width: 200px;
+    border: 2px solid black;
+    vertical-align: top;
+}
+#recent_reviews{
+    background: lightgray;
+    display: inline-block;
+    border: 2px solid black;
+}
+#star {
+    width: 30px;
+    vertical-align: bottoms;
+}
+hr {
+    width: 90%;
+    border: 1; 
+    height: 3px; 
+  background-image: linear-gradient(to right, #f0f0f0, #8c8b8b, #f0f0f0);
+}
+.container{
+    width: 80%;
+    margin: 20px auto;
+
+}
+.quote{
+    border: 1px solid black;
+    margin: 5px;
+    display: block;
+    padding: 5px;
+}
+.error{
+    color: red;
+}
+div {
+    display: inline-block;
+}
+#favs {
+    vertical-align: top;
+    overflow: auto;
+    height: 40vh;
+    border: 2px solid black;
+    padding: 0px 5px; 
+}
+
+#quotes {
+    vertical-align: top;
+    overflow: auto;
+    height: 40vh;
+    border: 2px solid black;
+    padding: 0px 5px; 
+}
+button {
+    font-size: 1.2em;
+    margin: 5px 0px;
+}

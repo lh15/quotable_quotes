@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Books - belt reviewer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'first_app/css/style.css' %}"media="screen" title="no title"  charset="utf-8">
+</head>
+
+<body>
+    <h1>quotes</h1>
+    <!--<p>Welcome {{ request.session.logged_in }}</p>-->
+    <h2>Welcome {{ current_user.first_name }} {{ current_user.last_name }}</h2>
+    <a href="/log_out">log off</a>
+    
+    <hr>
+    <div id="quotes">
+        <h2>Quotable quotes:</h2>
+         {% for quote in not_fav_quotes %}
+                <div class="quote">
+                    <p><b>Author:</b> {{quote.author}}  </p>
+                    <p><b>Quote:</b> {{quote.quote}}</p>
+                    <p><b>Posted by:</b> <a href="{%url 'first_app:display_user' id=quote.posted_by.id %}">{{quote.posted_by.first_name}}</a> on {{quote.created_at}} (and it's displayed in your local time!!! :))</p>
+                    <form action="{%url 'first_app:add_fav' id=quote.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="add_fav">Add to my favorites</button>
+                    </form>
+                    {% if quote.posted_by.id == current_user.id %}
+                    <form action="{%url 'first_app:delete_quote' id=quote.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="delete">Delete Quote</button>
+                    </form>
+                    {% endif %}
+                </div> 
+                <br>
+        {% endfor %}
+    </div>
+    
+    <div id="favs">
+        <h2>My favorite quotes:</h2>
+         {% for quote in current_user.fav_quotes.all %}
+                <div class="quote">
+                    <p><b>Author:</b> {{quote.author}}  </p>
+                    <p><b>Quote:</b> {{quote.quote}}</p>
+                    <p><b>Posted by:</b> <a href="{%url 'first_app:display_user' id=quote.posted_by.id %}">{{quote.posted_by.first_name}}</a> on {{quote.created_at}} (and it's displayed in your local time!!! :))</p>
+                    <form action="{%url 'first_app:remove_fav' id=quote.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="add_fav">Remove from favorites</button>
+                    </form>
+                     {% if quote.posted_by.id == current_user.id %}
+                    <form action="{%url 'first_app:delete_quote' id=quote.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="delete">Delete Quote</button>
+                    </form>
+                    {% endif %}
+                    
+                </div> 
+                <br>
+        {% endfor %}
+    </div>
+    <form action="/process_quote" method="POST">
+            {% csrf_token %}
+            <h2>Contribute a quote:</h2>
+              {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <label><b>Quoted by:</b></label>
+            <input type="text" name="author" placeholder="Quote Author" required><br>
+            <label><b>Quote:</b></label><br>
+            <textarea name="quote" style="width: 40%; height: 100px;" required></textarea><br>
+            <button type="submit">Submit Quote</button>
+        </form>
+        {% load tz_detect %}
+{% tz_detect %}
+</body>
+
+</html>
